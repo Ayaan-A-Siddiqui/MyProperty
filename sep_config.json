@@ -1,0 +1,128 @@
+{
+  "programs": {
+    "cover_crops": {
+      "name": "Cover Crops Program",
+      "description": "SEP Cover Crops Implementation",
+      "requirements": {
+        "min_acres": 10,
+        "max_acres": 1000,
+        "max_slope_pct": 15,
+        "max_dist_to_road_miles": 1.0,
+        "allowed_soil_orders": ["Alfisols", "Mollisols", "Entisols", "Inceptisols", "Spodosols"],
+        "excluded_soil_orders": ["Histosols", "Vertisols"],
+        "allowed_landuse": ["farmland", "farmyard", "meadow", "grass", "orchard", "vineyard"],
+        "min_organic_matter": 1.0,
+        "max_erodibility": 0.4,
+        "required_practices": ["no_till", "cover_crop_seeding"],
+        "stacking_allowed": true,
+        "county_restrictions": {
+          "MCLEAN": "ELIGIBLE",
+          "CHAMPAIGN": "ELIGIBLE",
+          "TAZEWELL": "ELIGIBLE"
+        }
+      },
+      "scoring": {
+        "acres": 20,
+        "soil_health": 25,
+        "erosion_risk": 25,
+        "access": 15,
+        "practice_adoption": 15
+      }
+    },
+    "conservation_tillage": {
+      "name": "Conservation Tillage Program",
+      "description": "SEP Conservation Tillage Implementation",
+      "requirements": {
+        "min_acres": 20,
+        "max_acres": 2000,
+        "max_slope_pct": 12,
+        "max_dist_to_road_miles": 0.75,
+        "allowed_soil_orders": ["Alfisols", "Mollisols", "Entisols", "Inceptisols"],
+        "excluded_soil_orders": ["Histosols"],
+        "allowed_landuse": ["farmland", "farmyard"],
+        "min_organic_matter": 0.8,
+        "max_erodibility": 0.5,
+        "required_practices": ["reduced_till", "residue_management"],
+        "stacking_allowed": true,
+        "county_restrictions": {
+          "MCLEAN": "ELIGIBLE",
+          "CHAMPAIGN": "ELIGIBLE",
+          "TAZEWELL": "ELIGIBLE"
+        }
+      },
+      "scoring": {
+        "acres": 25,
+        "soil_health": 30,
+        "erosion_risk": 30,
+        "access": 15
+      }
+    },
+    "nutrient_management": {
+      "name": "Nutrient Management Program",
+      "description": "SEP Nutrient Management Implementation",
+      "requirements": {
+        "min_acres": 15,
+        "max_acres": 1500,
+        "max_slope_pct": 8,
+        "max_dist_to_road_miles": 0.5,
+        "allowed_soil_orders": ["Alfisols", "Mollisols", "Entisols"],
+        "excluded_soil_orders": ["Histosols", "Spodosols"],
+        "allowed_landuse": ["farmland", "farmyard"],
+        "min_organic_matter": 1.2,
+        "max_erodibility": 0.3,
+        "required_practices": ["soil_testing", "precision_application"],
+        "stacking_allowed": false,
+        "county_restrictions": {
+          "MCLEAN": "ELIGIBLE",
+          "CHAMPAIGN": "ELIGIBLE",
+          "TAZEWELL": "ELIGIBLE"
+        }
+      },
+      "scoring": {
+        "acres": 20,
+        "soil_health": 35,
+        "water_quality": 30,
+        "access": 15
+      }
+    }
+  },
+  "data_sources": {
+    "county_assessors": {
+      "mclean": {
+        "name": "McLean County Assessor",
+        "api_url": "https://mcleancountyil.gov/assessor/",
+        "data_format": "shapefile",
+        "update_frequency": "monthly",
+        "fields": ["apn", "address", "owner", "acres", "landuse", "tax_code"]
+      },
+      "champaign": {
+        "name": "Champaign County Assessor", 
+        "api_url": "https://champaigncounty.gov/assessor/",
+        "data_format": "geojson",
+        "update_frequency": "quarterly",
+        "fields": ["parcel_id", "street_address", "owner_name", "acres", "landuse"]
+      }
+    },
+    "usda_sources": {
+      "ssurgo": {
+        "name": "SSURGO Soils Database",
+        "api_url": "https://sdmdataaccess.nrcs.usda.gov/",
+        "data_format": "api",
+        "fields": ["mukey", "taxorder", "slope_r", "om_r", "kwfact"]
+      },
+      "nlcd": {
+        "name": "National Land Cover Database",
+        "api_url": "https://www.mrlc.gov/",
+        "data_format": "raster",
+        "fields": ["landcover_class", "percent_cover"]
+      }
+    }
+  },
+  "default_settings": {
+    "crs": "EPSG:5070",
+    "output_dir": "output",
+    "log_level": "INFO",
+    "max_api_retries": 3,
+    "api_timeout_sec": 30
+  }
+} 
